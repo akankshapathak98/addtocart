@@ -1,6 +1,27 @@
-<?php include('header.php');
-include('sidebar.php');
+<?php
+include("header.php");
+include("sidebar.php");
+include("config.php");
+$errors = array();
+$sql = "SELECT * FROM tags";
+$result = mysqli_query($conn, $sql);
+if (isset($_POST['submit'])) {
+	$tag_name = isset($_POST['tagname']) ? ($_POST['tagname']) : '';
+
+	$query = "INSERT INTO tags(`tag_name`) VALUES('$tag_name')";
+
+	if ($conn->query($sql) === true) {
+		//echo "New record created successfully";
+	} else {
+		// echo "Error: " . $sql . "<br>" . $conn->error;
+		$errors[] = array('input' => 'form', 'msg' => $conn->error);
+	}
+}
+
+
 ?>
+
+<html>
 <div id="main-content">
 	<!-- Main Content Section with everything -->
 
@@ -16,6 +37,7 @@ include('sidebar.php');
 	<!-- Page Head -->
 	<h2>Welcome John</h2>
 	<p id="page-intro">What would you like to do?</p>
+
 	<div class="clear"></div> <!-- End .clear -->
 
 	<div class="content-box">
@@ -51,11 +73,9 @@ include('sidebar.php');
 					<thead>
 						<tr>
 							<th><input class="check-all" type="checkbox" /></th>
-							<th>Column 1</th>
-							<th>Column 2</th>
-							<th>Column 3</th>
-							<th>Column 4</th>
-							<th>Column 5</th>
+							<th>Tag_ID</th>
+							<th>Tag_Name</th>
+							<th>Action</th>
 						</tr>
 
 					</thead>
@@ -86,117 +106,29 @@ include('sidebar.php');
 					</tfoot>
 
 					<tbody>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
 
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
+						<?php
+						$i = 0;
+						while ($row = mysqli_fetch_array($result)) {
+							if ($i % 2 == 0) {
+								$classname = "evenRow";
+							} else {
+								$classname = "oddRow";
+							}
+						?>
+							<tr>
+								<td> <input type="checkbox" /></td>
+								<td><?php echo $row["tag_id"]; ?></td>
+								<td><?php echo $row["tag_name"]; ?></td>
+								<td>
+									<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
+									<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>";
+								</td>
+							</tr>
+						<?php
+							$i++;
+						}
+						?>
 					</tbody>
 
 				</table>
@@ -211,49 +143,12 @@ include('sidebar.php');
 						<!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 
 						<p>
-							<label>Small form input</label>
-							<input class="text-input small-input" type="text" id="small-input" name="small-input" /> <span class="input-notification success png_bg">Successful message</span> <!-- Classes for input-notification: success, error, information, attention -->
-							<br /><small>A small description of the field</small>
+							<label>Tag Name</label>
+							<input class="text-input medium-input datepicker" type="text" id="tagname" name="tagname" />
 						</p>
 
 						<p>
-							<label>Medium form input</label>
-							<input class="text-input medium-input datepicker" type="text" id="medium-input" name="medium-input" /> <span class="input-notification error png_bg">Error message</span>
-						</p>
-
-						<p>
-							<label>Large form input</label>
-							<input class="text-input large-input" type="text" id="large-input" name="large-input" />
-						</p>
-
-						<p>
-							<label>Checkboxes</label>
-							<input type="checkbox" name="checkbox1" /> This is a checkbox <input type="checkbox" name="checkbox2" /> And this is another checkbox
-						</p>
-
-						<p>
-							<label>Radio buttons</label>
-							<input type="radio" name="radio1" /> This is a radio button<br />
-							<input type="radio" name="radio2" /> This is another radio button
-						</p>
-
-						<p>
-							<label>This is a drop down list</label>
-							<select name="dropdown" class="small-input">
-								<option value="option1">Option 1</option>
-								<option value="option2">Option 2</option>
-								<option value="option3">Option 3</option>
-								<option value="option4">Option 4</option>
-							</select>
-						</p>
-
-						<p>
-							<label>Textarea with WYSIWYG</label>
-							<textarea class="text-input textarea wysiwyg" id="textarea" name="textfield" cols="79" rows="15"></textarea>
-						</p>
-
-						<p>
-							<input class="button" type="submit" value="Submit" />
+							<input class="button" type="submit" name="submit" value="Submit" />
 						</p>
 
 					</fieldset>
@@ -268,6 +163,37 @@ include('sidebar.php');
 
 	</div> <!-- End .content-box -->
 
-
 	<div class="clear"></div>
-	<?php include('footer.php'); ?>
+
+	<!-- Start Notifications -->
+	<!--
+			<div class="notification attention png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Attention notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero. 
+				</div>
+			</div>
+			
+			<div class="notification information png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Information notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			
+			<div class="notification success png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Success notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			
+			<div class="notification error png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Error notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			-->
+	<!-- End Notifications -->
+	<?php include("footer.php"); ?>

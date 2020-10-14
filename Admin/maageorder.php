@@ -1,6 +1,9 @@
-<?php include('header.php');
-include('sidebar.php');
+<?php
+include("header.php");
+include("sidebar.php");
 ?>
+
+<html>
 <div id="main-content">
 	<!-- Main Content Section with everything -->
 
@@ -16,6 +19,7 @@ include('sidebar.php');
 	<!-- Page Head -->
 	<h2>Welcome John</h2>
 	<p id="page-intro">What would you like to do?</p>
+
 	<div class="clear"></div> <!-- End .clear -->
 
 	<div class="content-box">
@@ -51,13 +55,13 @@ include('sidebar.php');
 					<thead>
 						<tr>
 							<th><input class="check-all" type="checkbox" /></th>
-							<th>Column 1</th>
-							<th>Column 2</th>
-							<th>Column 3</th>
-							<th>Column 4</th>
-							<th>Column 5</th>
+							<th>Order_ID</th>
+							<th>User_ID</th>
+							<th>cartaData</th>
+							<th>Total</th>
+							<th>Status</th>
+							<th>DateTime</th>
 						</tr>
-
 					</thead>
 
 					<tfoot>
@@ -88,115 +92,20 @@ include('sidebar.php');
 					<tbody>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
+							<td>100r</td>
+							<td><a href="#" title="title">25</a></td>
+							<td>Consectetur adipiscing dsd</td>
+							<td>300</td>
+							<td>Pending</td>
+							<td>10/14/2020 5:56</td>
 							<td>
 								<!-- Icons -->
 								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
 								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
 							</td>
 						</tr>
 
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
 
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Lorem ipsum dolor</td>
-							<td><a href="#" title="title">Sit amet</a></td>
-							<td>Consectetur adipiscing</td>
-							<td>Donec tortor diam</td>
-							<td>
-								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
-								<a href="#" title="Edit Meta"><img src="resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
-							</td>
-						</tr>
 					</tbody>
 
 				</table>
@@ -268,7 +177,37 @@ include('sidebar.php');
 
 	</div> <!-- End .content-box -->
 
-
 	<div class="clear"></div>
-	<?php include('footer.php'); ?>
-	
+
+	<!-- Start Notifications -->
+	<!--
+			<div class="notification attention png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Attention notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero. 
+				</div>
+			</div>
+			
+			<div class="notification information png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Information notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			
+			<div class="notification success png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Success notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			
+			<div class="notification error png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Error notification. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate, sapien quis fermentum luctus, libero.
+				</div>
+			</div>
+			-->
+	<!-- End Notifications -->
+	<?php include("footer.php"); ?>

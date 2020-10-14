@@ -10,7 +10,6 @@ if (isset($_POST['add'])) {
     $product_name = isset($_POST['product_name']) ? $_POST['product_name'] : '';
     $product_price = isset($_POST['product_price']) ? $_POST['product_price'] : '';
     $category_id = isset($_POST['category_id']) ? $_POST['category_id'] : '';
-    print_r($category_id);
 
     if (sizeof($errors) == 0) {
         $filename = $_FILES["uploadfile"]["name"];
