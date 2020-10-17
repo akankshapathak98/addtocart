@@ -1,11 +1,45 @@
+<?php 
+session_start();
+require '../Admin/config.php';
+$errors=array();
+$message='';
+if (isset($_POST['login'])) {
+    $username=isset($_POST['username'])?$_POST['username']:'';
+    $password=isset($_POST['password'])?$_POST['password']:'';
+    if (empty($_POST['username']) ||
+        empty($_POST['password'])) {
+            $errors[]=array('input'=>'password','msg'=>'All Fields are required' );
+    }
+    if (sizeof($errors)==0) {
+        $sql = "SELECT * FROM users 
+		WHERE `username`='".$username."'AND `passwords`='".$password."'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $_SESSION['userdata']=array
+                ('username'=>$row['username'],'user_id'=>$row['user_id'],'role' => $row['role']);
+                if ($_SESSION['userdata']['role']=='admin') {
+                    header('Location: product.php');
+                } else {
+                    header('Location: index.html');
+                }
+            }
+        } else {
+            $errors[] = array ('input'=>'form','msg'=>'Invalid Details');
+        }
+        $conn->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Daily Shop | Account Page</title>
-    
+    <title>Daily Shop | Cart Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Font awesome -->
     <link href="css/font-awesome.css" rel="stylesheet">
     <!-- Bootstrap -->
@@ -40,7 +74,7 @@
 
   </head>
   <body>
-  
+   
    <!-- wpf loader Two -->
     <div id="wpf-loader-two">          
       <div class="wpf-loader-two-inner">
@@ -295,7 +329,7 @@
                 </ul>
               </li>
               <li><a href="#">Furniture</a></li>            
-              <li><a href="blog-archive.html">Blog <span class="caret"></span></a>
+               <li><a href="blog-archive.html">Blog <span class="caret"></span></a>
                 <ul class="dropdown-menu">                
                   <li><a href="blog-archive.html">Blog Style 1</a></li>
                   <li><a href="blog-archive-2.html">Blog Style 2</a></li>
@@ -321,14 +355,14 @@
  
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
-    <img src="img/fashion/fashion-header-bg-8.jpg" alt="fashion img">
-    <div class="aa-catg-head-banner-area">
+   <img src="img/fashion/fashion-header-bg-8.jpg" alt="fashion img">
+   <div class="aa-catg-head-banner-area">
      <div class="container">
       <div class="aa-catg-head-banner-content">
-        <h2>Account Page</h2>
+        <h2>Cart Page</h2>
         <ol class="breadcrumb">
           <li><a href="index.html">Home</a></li>                   
-          <li class="active">Account</li>
+          <li class="active">Cart</li>
         </ol>
       </div>
      </div>
@@ -337,45 +371,167 @@
   <!-- / catg header banner section -->
 
  <!-- Cart view section -->
- <section id="aa-myaccount">
+
+ <section id="cart-view">
    <div class="container">
      <div class="row">
        <div class="col-md-12">
-        <div class="aa-myaccount-area">         
-            <div class="row">
-              <div class="col-md-6">
-                <div class="aa-myaccount-login">
-                <h4>Login</h4>
-                 <form action="" class="aa-login-form">
-                  <label for="">Username or Email address<span>*</span></label>
-                   <input type="text" placeholder="Username or email">
-                   <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
-                    <button type="submit" class="aa-browse-btn">Login</button>
-                    <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
-                    <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
-                  </form>
+         <div class="cart-view-area">
+           <div class="cart-view-table">
+           
+             <form method="post" action="">
+               <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                   
+               
+                    <?php
+                     $total_quantity = 0;
+                     $total_price = 0;
+                    foreach ($_SESSION["cart_item"] as $key=>$value) {
+                    $item_price =  $_SESSION["cart_item"][$key]["quantity"]* $_SESSION["cart_item"][$key]["product_price"];
+                    ?>
+                    <form method="post" action="">
+                      <tr>
+                        <td><a data-action="remove" data-productid="<?php echo $_SESSION["cart_item"][$key]["product_id"];?>" class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
+                        <td><img src="../Admin/resources/images/productimage/<?php echo  $_SESSION["cart_item"][$key]["image"]; ?>" alt="img"></td>
+                        <td><?php echo  $_SESSION["cart_item"][$key]["product_name"]; ?></td>
+                        <td><?php echo "$ ". $_SESSION["cart_item"][$key]["product_price"]; ?></td>
+                        <td><input class="aa-cart-quantity quantity" 
+                         name="quantity[]" type="number" value="<?php echo  $_SESSION["cart_item"][$key]["quantity"]; ?>"></td>
+                        <td><?php echo "$ ". number_format($item_price, 2); ?></td>
+                        
+                      </tr>
+                    </form>
+                      <?php
+                      $total_quantity +=  $_SESSION["cart_item"][$key]["quantity"];
+                      $total_price += ( $_SESSION["cart_item"][$key]["product_price"]* $_SESSION["cart_item"][$key]["quantity"]);
+                      }?>
+                      <tr>
+                        <td colspan="6" class="aa-cart-view-bottom">
+                          <div class="aa-cart-coupon">
+                            <input class="aa-coupon-code" type="text" placeholder="Coupon">
+                            <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
+                          </div>
+                          <input class="aa-cart-view-btn update" data-action="update" type="button" value="Update Cart">
+                        </td>
+                      </tr>
+                      </tbody>
+                  </table>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="aa-myaccount-register">                 
-                 <h4>Register</h4>
-                 <form action="" class="aa-login-form">
-                    <label for="">Username or Email address<span>*</span></label>
-                    <input type="text" placeholder="Username or email">
-                    <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
-                    <button type="submit" class="aa-browse-btn">Register</button>                    
-                  </form>
-                </div>
-              </div>
-            </div>          
+             </form>
+                    
+             <!-- Cart Total view -->
+             <div class="cart-view-total">
+               <h4>Cart Totals</h4>
+               <table class="aa-totals-table">
+                 <tbody>
+                   <tr>
+                     <th>Subtotal</th>
+                     <td>$450</td>
+                   </tr>
+                   <tr>
+                     <th>Total</th>
+                     <td><?php echo "$ ".number_format($total_price, 2); ?></td>
+                   </tr>
+                   
+                 </tbody>
+               </table>
+               <a href="#" class="aa-cart-view-btn checkout" data-checkout="checkout"  name="checkout"
+               data-totalpricecart="<?php echo number_format($total_price, 2); ?>">Proced to Checkout</a>
+             </div>
+             
+           </div>
          </div>
        </div>
      </div>
    </div>
  </section>
+ <script>
+        $(document).ready(function(){
+
+            
+            $('a').on("click",function(){
+                var productid=$(this).data('productid');
+                var action=$(this).data('action');
+               
+                $.ajax({
+                    method: "POST",
+                    url: "ajax_action.php",
+                    data: { productid: productid, action: action}
+                })
+                
+            });
+
+            $('.update').click(function(){
+              var quantity=document.getElementsByName('quantity[]'); 
+            
+             var k= []; 
+              for(var i=0;i<quantity.length;i++)
+              {
+                var a=quantity[i];
+                k[i] = a.value; 
+                
+              }
+               var action=$(this).data('action');
+                $.ajax({
+                    method: "POST",
+                    url: "ajax_action.php",
+                    data: { action: action,quantity:k}
+                })
+                .done(function( msg ) {
+                    alert( "Data Saved: " + msg );
+                });
+                
+            });
+            $('.checkout').on("click",function(){
+              alert("hi");
+                var checkout=$(this).data('checkout');
+                var total_price= $(this).data('totalpricecart');
+                $.ajax({
+                    method: "POST",
+                    url: "ajax_action.php",
+                    data: { checkout: checkout, total_price:total_price}
+                })
+                .done(function( msg ) {
+                    alert( "Data Saved: " + msg );
+                });
+            });
+        });
+        </script>
+
+ 
  <!-- / Cart view section -->
+
+
+  <!-- Subscribe section -->
+  <section id="aa-subscribe">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-subscribe-area">
+            <h3>Subscribe our newsletter </h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
+            <form action="" class="aa-subscribe-form">
+              <input type="email" name="" id="" placeholder="Enter your Email">
+              <input type="submit" value="Subscribe">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / Subscribe section -->
 
   <!-- footer -->  
   <footer id="aa-footer">
@@ -477,12 +633,12 @@
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4>Login or Register</h4>
-          <form class="aa-login-form" action="">
+          <form class="aa-login-form" method="post" action="">
             <label for="">Username or Email address<span>*</span></label>
-            <input type="text" placeholder="Username or email">
+            <input type="text" name="username" placeholder="Username or email">
             <label for="">Password<span>*</span></label>
-            <input type="password" placeholder="Password">
-            <button class="aa-browse-btn" type="submit">Login</button>
+            <input type="password" name="password" placeholder="Password">
+            <button class="aa-browse-btn" name="login" type="submit">Login</button>
             <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
             <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
             <div class="aa-register-now">
@@ -496,27 +652,26 @@
 
 
     
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="js/bootstrap.js"></script>  
-  <!-- SmartMenus jQuery plugin -->
-  <script type="text/javascript" src="js/jquery.smartmenus.js"></script>
-  <!-- SmartMenus jQuery Bootstrap Addon -->
-  <script type="text/javascript" src="js/jquery.smartmenus.bootstrap.js"></script>  
-  <!-- To Slider JS -->
-  <script src="js/sequence.js"></script>
-  <script src="js/sequence-theme.modern-slide-in.js"></script>  
-  <!-- Product view slider -->
-  <script type="text/javascript" src="js/jquery.simpleGallery.js"></script>
-  <script type="text/javascript" src="js/jquery.simpleLens.js"></script>
-  <!-- slick slider -->
-  <script type="text/javascript" src="js/slick.js"></script>
-  <!-- Price picker slider -->
-  <script type="text/javascript" src="js/nouislider.js"></script>
-  <!-- Custom js -->
-  <script src="js/custom.js"></script> 
-  
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>  
+    <!-- SmartMenus jQuery plugin -->
+    <script type="text/javascript" src="js/jquery.smartmenus.js"></script>
+    <!-- SmartMenus jQuery Bootstrap Addon -->
+    <script type="text/javascript" src="js/jquery.smartmenus.bootstrap.js"></script>  
+    <!-- To Slider JS -->
+    <script src="js/sequence.js"></script>
+    <script src="js/sequence-theme.modern-slide-in.js"></script>  
+    <!-- Product view slider -->
+    <script type="text/javascript" src="js/jquery.simpleGallery.js"></script>
+    <script type="text/javascript" src="js/jquery.simpleLens.js"></script>
+    <!-- slick slider -->
+    <script type="text/javascript" src="js/slick.js"></script>
+    <!-- Price picker slider -->
+    <script type="text/javascript" src="js/nouislider.js"></script>
+    <!-- Custom js -->
+    <script src="js/custom.js"></script> 
 
   </body>
 </html>

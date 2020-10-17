@@ -8,7 +8,7 @@ $result = mysqli_query($conn, $sql);
 if (isset($_POST['submit'])) {
 	$tag_name = isset($_POST['tagname']) ? ($_POST['tagname']) : '';
 
-	$query = "INSERT INTO tags(`tag_name`) VALUES('$tag_name')";
+	$sql = 'INSERT INTO tags(`tag_name`) VALUES("' . $tag_name . '")';
 
 	if ($conn->query($sql) === true) {
 		//echo "New record created successfully";
@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 
 		<div class="content-box-header">
 
-			<h3>Content box</h3>
+			<h3>Tags</h3>
 
 			<ul class="content-box-tabs">
 				<li><a href="#tab1" class="default-tab">Manage</a></li> <!-- href must be unique and match the id of target div -->
@@ -78,71 +78,66 @@ if (isset($_POST['submit'])) {
 							<th>Action</th>
 						</tr>
 
-					</thead>
+						</thead>
 
-					<tfoot>
-						<tr>
-							<td colspan="6">
-								<div class="bulk-actions align-left">
-									<select name="dropdown">
-										<option value="option1">Choose an action...</option>
-										<option value="option2">Edit</option>
-										<option value="option3">Delete</option>
-									</select>
-									<a class="button" href="#">Apply to selected</a>
-								</div>
+<tfoot>
+	<tr>
+		<td colspan="6">
+			<div class="bulk-actions align-left">
+				<select name="dropdown">
+					<option value="option1">Choose an action...</option>
+					<option value="option2">Edit</option>
+					<option value="option3">Delete</option>
+				</select>
+				<a class="button" href="#">Apply to selected</a>
+			</div>
 
-								<div class="pagination">
-									<a href="#" title="First Page">&laquo; First</a><a href="#" title="Previous Page">&laquo; Previous</a>
-									<a href="#" class="number" title="1">1</a>
-									<a href="#" class="number" title="2">2</a>
-									<a href="#" class="number current" title="3">3</a>
-									<a href="#" class="number" title="4">4</a>
-									<a href="#" title="Next Page">Next &raquo;</a><a href="#" title="Last Page">Last &raquo;</a>
-								</div> <!-- End .pagination -->
-								<div class="clear"></div>
-							</td>
-						</tr>
-					</tfoot>
+			<div class="pagination">
+				<a href="#" title="First Page">&laquo; First</a><a href="#" title="Previous Page">&laquo; Previous</a>
+				<a href="#" class="number" title="1">1</a>
+				<a href="#" class="number" title="2">2</a>
+				<a href="#" class="number current" title="3">3</a>
+				<a href="#" class="number" title="4">4</a>
+				<a href="#" title="Next Page">Next &raquo;</a><a href="#" title="Last Page">Last &raquo;</a>
+			</div> <!-- End .pagination -->
+			<div class="clear"></div>
+		</td>
+	</tr>
+</tfoot>
 
-					<tbody>
-
+<tbody>
 						<?php
-						$i = 0;
+					
 						while ($row = mysqli_fetch_array($result)) {
-							if ($i % 2 == 0) {
-								$classname = "evenRow";
-							} else {
-								$classname = "oddRow";
-							}
+						
 						?>
 							<tr>
 								<td> <input type="checkbox" /></td>
 								<td><?php echo $row["tag_id"]; ?></td>
 								<td><?php echo $row["tag_name"]; ?></td>
 								<td>
-									<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
-									<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>";
+									<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>
+									<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>
 								</td>
 							</tr>
 						<?php
-							$i++;
+							
 						}
 						?>
 					</tbody>
 
-				</table>
+					</table>
 
-			</div> <!-- End #tab1 -->
+</div> <!-- End #tab1 -->
 
-			<div class="tab-content" id="tab2">
+<div class="tab-content" id="tab2">
 
-				<form action="#" method="post">
+	<form action="#" method="post">
 
-					<fieldset>
-						<!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+		<fieldset>
+			<!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 
-						<p>
+			<p>
 							<label>Tag Name</label>
 							<input class="text-input medium-input datepicker" type="text" id="tagname" name="tagname" />
 						</p>

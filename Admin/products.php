@@ -5,29 +5,42 @@ $errors = array();
 $message = '';
 $sql = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
+$querry="SELECT * FROM tags ";
+$results = mysqli_query($conn, $querry);
+$querryy="SELECT * FROM categories ";
+$resultt = mysqli_query($conn, $querryy);
 
 if (isset($_POST['add'])) {
 	$product_name = isset($_POST['product_name']) ? $_POST['product_name'] : '';
 	$product_price = isset($_POST['product_price']) ? $_POST['product_price'] : '';
 	$category_id = isset($_POST['category_id']) ? $_POST['category_id'] : '';
-	print_r($category_id);
-
+	$color= isset($_POST['color']) ? $_POST['color'] : '';
+	$tag = isset($_POST['tags']) ? $_POST['tags'] : '';
+		$tags = json_encode($tag);
 	if (sizeof($errors) == 0) {
 		$filename = $_FILES["uploadfile"]["name"];
 		$tempname = $_FILES["uploadfile"]["tmp_name"];
 		$folder = "resources/images/productimage/" . $filename;
-		$sql = 'INSERT INTO products (`product_name`, `product_price`,`product_image`,`category_id`,`short_desc`,`long_desc`)    
+		$sql = 'INSERT INTO products (`product_name`, `product_price`,`product_image`,`category_id`,`short_desc`,`long_desc`,`color`,`tags`,`quantity`)    
         values ("' . $product_name . '", "' . $product_price . '","' . $filename . '",(SELECT `category_id` FROM categories WHERE `category_id` = "' . $category_id . '")
-        ,"This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.","This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.")';
+        ,"This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.","This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.", "'.$color.'","'.addslashes($tags).'","1")';
+		if ($conn->query($sql) === true) {
+			//echo "New record created successfully";
+		} else {
+			 echo "Error: " . $sql . "<br>" . $conn->error;
+			$errors[] = array('input' => 'form', 'msg' => $conn->error);
+		}
+		if (move_uploaded_file($tempname, $folder)) {
+		} else {
+		}
+		$sql='INSERT INTO colors(`color`,`product_id`)values("'.$color.'",(SELECT `product_id` FROM products WHERE `color`="'.$color.'"))';
 		if ($conn->query($sql) === true) {
 			//echo "New record created successfully";
 		} else {
 			// echo "Error: " . $sql . "<br>" . $conn->error;
 			$errors[] = array('input' => 'form', 'msg' => $conn->error);
 		}
-		if (move_uploaded_file($tempname, $folder)) {
-		} else {
-		}
+		
 		$conn->close();
 	}
 }
@@ -200,23 +213,36 @@ if (isset($_POST['add'])) {
 
 						</p>
 						<p>
+							<label>Color</label>
+							<input type="color" id="color" name="color" value="#ff0000"><br><br>
+							</p>
+						<p>
 							<label>Category</label>
 							<select name="category_id" class="small-input">
-								<option value="1">Men</option>
-								<option value="2">Women</option>
-								<option value="3">Kids</option>
-								<option value="4">Electronics</option>
-								<option value="5">Sports</option>
+							<?php
+						
+						while ($row = mysqli_fetch_array($resultt)) {
+						
+						?>
+								<option value="<?php echo $row["category_id"]?>"><?php echo $row["cat_name"]?></option>
+								<?php
+							
+						}
+						?>
 							</select>
 						</p>
 						<p>
 							<label>Tags</label>
-							<input type="checkbox" name="fashion" /> Fashion
-							<input type="checkbox" name="ecommerce" /> Ecommerce
-							<input type="checkbox" name="shop" /> Shop
-							<input type="checkbox" name="handbag" /> Hand Bag
-							<input type="checkbox" name="laptop" /> Laptop
-							<input type="checkbox" name="headphone" /> Headphone
+							<?php
+						
+						while ($row = mysqli_fetch_array($results)) {
+							
+						?>
+								<input type="checkbox" name="tags[]" /> <?php echo $row["tag_name"]?>
+								<?php
+							
+						}
+						?>
 						</p>
 						<p>
 							<label>Description</label>

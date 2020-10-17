@@ -1,6 +1,9 @@
 <?php
 include("header.php");
 include("sidebar.php");
+include('config.php');
+$sql = "SELECT * FROM orders";
+$result = mysqli_query($conn, $sql);
 ?>
 
 <html>
@@ -90,21 +93,28 @@ include("sidebar.php");
 					</tfoot>
 
 					<tbody>
+					<?php
+					
+						while ($row = mysqli_fetch_array($result)) {
+							
+						?>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td>100r</td>
-							<td><a href="#" title="title">25</a></td>
-							<td>Consectetur adipiscing dsd</td>
-							<td>300</td>
-							<td>Pending</td>
-							<td>10/14/2020 5:56</td>
+							<td><?php echo $row["order_id"]; ?></td>
+							<td><a href="#" title="title"><?php echo $row["user_id"]; ?></a></td>
+							<td><?php echo $row["cartdata"]; ?></td>
+							<td><?php echo $row["total"]; ?></td>
+							<td><?php echo $row["status"]; ?></td>
+							<td><?php echo $row["datetime"]; ?></td>
 							<td>
 								<!-- Icons -->
 								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
 								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
 							</td>
 						</tr>
-
+						<?php
+						}
+						?>
 
 					</tbody>
 
