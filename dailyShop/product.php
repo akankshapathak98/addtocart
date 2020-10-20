@@ -391,7 +391,7 @@ while ($row = mysqli_fetch_assoc($result)) {
               </div>
             </div>
           
-            <div class="aa-product-catg-body">
+            <div class="aa-product-catg-body" id="result">
               <ul class="aa-product-catg">
                 <!-- start single product item -->
                 <?php foreach ($product_array as $key => $value) {?>
@@ -418,123 +418,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </li>
                 <?php } ?>
                 </form>
-                <script>
-        $(document).ready(function(){
-           
-            $('.add').click(function(){
-                var productid=$(this).data('productid');
-                var action=$(this).data('action');
-                console.log(action);
-                $.ajax({
-                    method: "POST",
-                    url: "ajax_action.php",
-                    data: { productid: productid, action: action}
-                })
-                
-            });
-            $('.quick').click(function(){
-              
-                var productid=$(this).data('productid');
-               
-                // var action=$(this).data('action');
-                // $.ajax({
-                //     method: "POST",
-                //     url: "ajaxx_action.php",
-                //     data: { productid: productid,action:action}
-                // })
-                // .done(function( msg ) {
-                //     $('.ab').html( "Data Saved: " + msg );
-                // });
-
-                
-            });
-        });
-        </script>                                     
+                                                   
               </ul>
               <!-- quick view modal -->                  
-              <div class="modal fade" id="quick-view-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">                      
-                    <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <div class="row">
-                        <!-- Modal view slider -->
-                        <div class="col-md-6 col-sm-6 col-xs-12">                              
-                          <div class="aa-product-view-slider">                                
-                            <div class="simpleLens-gallery-container" id="demo-1">
-                              <div class="simpleLens-container">
-                                  <div class="simpleLens-big-image-container">
-                                      <a class="simpleLens-lens-image" data-lens-image="img/view-slider/large/polo-shirt-1.png">
-                                          <img src="img/view-slider/medium/polo-shirt-1.png" class="simpleLens-big-image">
-                                      </a>
-                                  </div>
-                              </div>
-                              <div class="simpleLens-thumbnails-container">
-                                  <a href="#" class="simpleLens-thumbnail-wrapper"
-                                     data-lens-image="img/view-slider/large/polo-shirt-1.png"
-                                     data-big-image="img/view-slider/medium/polo-shirt-1.png">
-                                      <img src="img/view-slider/thumbnail/polo-shirt-1.png">
-                                  </a>                                    
-                                  <a href="#" class="simpleLens-thumbnail-wrapper"
-                                     data-lens-image="img/view-slider/large/polo-shirt-3.png"
-                                     data-big-image="img/view-slider/medium/polo-shirt-3.png">
-                                      <img src="img/view-slider/thumbnail/polo-shirt-3.png">
-                                  </a>
-
-                                  <a href="#" class="simpleLens-thumbnail-wrapper"
-                                     data-lens-image="img/view-slider/large/polo-shirt-4.png"
-                                     data-big-image="img/view-slider/medium/polo-shirt-4.png">
-                                      <img src="img/view-slider/thumbnail/polo-shirt-4.png">
-                                  </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Modal view content -->
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <div class="aa-product-view-content">
-                          <?php 
-                           foreach ($product_array as $key => $value) {
-                            
-                             ?>
-                            <div class="aa-price-block">
-                              <span class="aa-product-view-price">$<?php echo $product_array[$key]["product_price"]; ?></span>
-                              <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
-                            <h4></h4>
-                            <div class="aa-prod-view-size">
-                              <a href="#">S</a>
-                              <a href="#">M</a>
-                              <a href="#">L</a>
-                              <a href="#">XL</a>
-                            </div>
-                            <div class="aa-prod-quantity">
-                              <form action="">
-                                <select name="" id="">
-                                  <option value="0" selected="1">1</option>
-                                  <option value="1">2</option>
-                                  <option value="2">3</option>
-                                  <option value="3">4</option>
-                                  <option value="4">5</option>
-                                  <option value="5">6</option>
-                                </select>
-                              </form>
-                              <p class="aa-prod-category">
-                                Category: <a href="#">Polo T-Shirt</a>
-                              </p>
-                            </div>
-                            <div class="aa-prod-view-bottom">
-                              <a href="#" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
-                              <a href="#" class="aa-add-to-cart-btn">View Details</a>
-                            </div>
-                            <?php } ?>
-                          </div>
-                        </div>
-                      </div>
-                    </div>                        
-                  </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
+              <div class="modal fade model" id="quick-view-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                
               </div>
               <!-- / quick view modal -->   
             </div>
@@ -582,7 +470,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 while ($row = mysqli_fetch_array($resultt)) {?>
                 <div class="list-group-item checkbox">
                   <label>
-                    <input type="checkbox" class="filter_all gender" value="<?php echo $row["cat_name"]?>">
+                    <input type="checkbox" id="categories" class="filter_all gender product_check" value="<?php echo $row["cat_name"]?>">
                     <?php echo $row["cat_name"]?>
                   </label>
                 </div>
@@ -600,7 +488,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 while ($row = mysqli_fetch_array($results)) {?>
                   <div class="list-group-item checkbox">
                     <label>
-                      <input type="checkbox" class="filter_all gender" value="<?php echo $row["tag_name"]?>">
+                      <input type="checkbox" class="filter_all gender product_check" value="<?php echo $row["tag_name"]?>">
                         <?php echo $row["tag_name"]?>
                     </label>
                   </div>
@@ -865,3 +753,59 @@ while ($row = mysqli_fetch_assoc($result)) {
 
   </body>
 </html>
+<script>
+        $(document).ready(function(){
+          $('.product_check').click(function(){
+            $('#loader').show();
+            var action='filter';
+            var categories=get_filter_text('categories');
+            var tags=get_filter_text('tags');
+            $.ajax({
+                    method: "POST",
+                    url: "filter.php",
+                    data: { action: action, categories: categories,tags:tags},
+                    success:function(response){
+                      $('#result').html(response);
+                      
+                      
+                    }
+                });
+
+          });
+           function get_filter_text(text_id)
+           {
+             var filterData=[];
+             $('#'+text_id+':checked').each(function(){
+              filterData.push($(this).val());
+             });
+             return filterData;
+           }
+
+           
+            $('.add').click(function(){
+                var productid=$(this).data('productid');
+                var action=$(this).data('action');
+                console.log(action);
+                $.ajax({
+                    method: "POST",
+                    url: "ajax_action.php",
+                    data: { productid: productid, action: action}
+                })
+                
+            });
+            $('.quick').click(function(){
+              
+              var productid=$(this).data('productid');
+              $.ajax({
+                  method: "POST",
+                  url: "model.php",
+                  data: { productid: productid}
+              })
+              .done(function( msg ) {
+                  $('.model').html(  msg );
+              });
+
+              
+          });
+        });
+        </script>  
