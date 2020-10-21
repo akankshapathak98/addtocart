@@ -5,42 +5,46 @@ $errors = array();
 $message = '';
 $sql = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
-$querry="SELECT * FROM tags ";
+$querry = "SELECT * FROM tags ";
 $results = mysqli_query($conn, $querry);
-$querryy="SELECT * FROM categories ";
+$querryy = "SELECT * FROM categories ";
 $resultt = mysqli_query($conn, $querryy);
 
 if (isset($_POST['add'])) {
+	$tag_id = array();
 	$product_name = isset($_POST['product_name']) ? $_POST['product_name'] : '';
 	$product_price = isset($_POST['product_price']) ? $_POST['product_price'] : '';
 	$category_id = isset($_POST['category_id']) ? $_POST['category_id'] : '';
-	$color= isset($_POST['color']) ? $_POST['color'] : '';
-	$tag = isset($_POST['tags']) ? $_POST['tags'] : '';
-		$tags = json_encode($tag);
+	$tag_id = isset($_POST['tags']) ? $_POST['tags'] : '';
+	$color = isset($_POST['color']) ? $_POST['color'] : '';
+
+	$tag_id = implode(",", $_POST['tags']);
 	if (sizeof($errors) == 0) {
 		$filename = $_FILES["uploadfile"]["name"];
 		$tempname = $_FILES["uploadfile"]["tmp_name"];
 		$folder = "resources/images/productimage/" . $filename;
-		$sql = 'INSERT INTO products (`product_name`, `product_price`,`product_image`,`category_id`,`short_desc`,`long_desc`,`color`,`tags`,`quantity`)    
-        values ("' . $product_name . '", "' . $product_price . '","' . $filename . '",(SELECT `category_id` FROM categories WHERE `category_id` = "' . $category_id . '")
-        ,"This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.","This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.", "'.$color.'","'.addslashes($tags).'","1")';
+		$sql = 'INSERT INTO products (`product_name`, `product_price`,`product_image`,`category_id`,`short_desc`,`long_desc`,`color`,`tag_id`,`quantity`)    
+		values ("' . $product_name . '", "' . $product_price . '","' . $filename . '"
+		,(SELECT `category_id` FROM categories WHERE `category_id` = "' . $category_id . '")
+		,"This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.","This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.This Hi-Grip Basketball Is Suitable for practice, normal match and for beginners.", 
+		"' . $color . '","' . addslashes($tag_id) . '","1")';
 		if ($conn->query($sql) === true) {
 			//echo "New record created successfully";
 		} else {
-			 echo "Error: " . $sql . "<br>" . $conn->error;
+			echo "Error: " . $sql . "<br>" . $conn->error;
 			$errors[] = array('input' => 'form', 'msg' => $conn->error);
 		}
 		if (move_uploaded_file($tempname, $folder)) {
 		} else {
 		}
-		$sql='INSERT INTO colors(`color`,`product_id`)values("'.$color.'",(SELECT `product_id` FROM products WHERE `color`="'.$color.'"))';
+		$sql = 'INSERT INTO colors(`color`,`product_id`)values("' . $color . '",(SELECT `product_id` FROM products WHERE `color`="' . $color . '"))';
 		if ($conn->query($sql) === true) {
 			//echo "New record created successfully";
 		} else {
 			// echo "Error: " . $sql . "<br>" . $conn->error;
 			$errors[] = array('input' => 'form', 'msg' => $conn->error);
 		}
-		
+
 		$conn->close();
 	}
 }
@@ -103,7 +107,7 @@ if (isset($_POST['add'])) {
 							<th>ProductImage</th>
 							<th>ShortDescription</th>
 							<th>LongDescription</th>
-
+							<th>Tags</th>
 							<th>Action</th>
 						</tr>
 
@@ -154,10 +158,11 @@ if (isset($_POST['add'])) {
 								<td><img src="resources/images/productimage/<?php echo $row["product_image"]; ?>" height="25px" width="25px"></td>
 								<td><?php echo $row["short_desc"]; ?></td>
 								<td><?php echo $row["long_desc"]; ?></td>
+								<td><?php echo $row["tag_id"]; ?></td>
 								<td>
 									<!-- Icons -->
-									<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-									<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
+									<a href="#" title="Edit" class="edit" data-action="update" data-productid="<?php echo $row["product_id"]; ?>"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+									<a href="#" title="Delete" class="remove" data-action="remove" data-productid="<?php echo $row["product_id"]; ?>"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
 								</td>
 							</tr>
 
@@ -171,7 +176,7 @@ if (isset($_POST['add'])) {
 
 			</div> <!-- End #tab1 -->
 
-			<div class="tab-content " id="tab2">
+			<div class="tab-content update" id="tab2">
 				<div id="message"><?php echo $message; ?></div>
 				<div id="errors">
 					<?php if (sizeof($errors) > 0) : ?>
@@ -215,34 +220,34 @@ if (isset($_POST['add'])) {
 						<p>
 							<label>Color</label>
 							<input type="color" id="color" name="color" value="#ff0000"><br><br>
-							</p>
+						</p>
 						<p>
 							<label>Category</label>
 							<select name="category_id" class="small-input">
-							<?php
-						
-						while ($row = mysqli_fetch_array($resultt)) {
-						
-						?>
-								<option value="<?php echo $row["category_id"]?>"><?php echo $row["cat_name"]?></option>
 								<?php
-							
-						}
-						?>
+
+								while ($row = mysqli_fetch_array($resultt)) {
+
+								?>
+									<option value="<?php echo $row["category_id"] ?>"><?php echo $row["cat_name"] ?></option>
+								<?php
+
+								}
+								?>
 							</select>
 						</p>
 						<p>
 							<label>Tags</label>
 							<?php
-						
-						while ($row = mysqli_fetch_array($results)) {
-							
-						?>
-								<input type="checkbox" name="tags[]" /> <?php echo $row["tag_name"]?>
-								<?php
-							
-						}
-						?>
+
+							while ($row = mysqli_fetch_array($results)) {
+
+							?>
+								<input type="checkbox" name="tags[]" value="<?php echo $row["tag_name"] ?>" /> <?php echo $row["tag_name"] ?>
+							<?php
+
+							}
+							?>
 						</p>
 						<p>
 							<label>Description</label>
@@ -263,4 +268,42 @@ if (isset($_POST['add'])) {
 		</div> <!-- End .content-box-content -->
 	</div> <!-- End .content-box -->
 	<div class="clear"></div>
+	<script>
+		$('.remove').on("click", function() {
+
+			var productid = $(this).data('productid');
+			var action = $(this).data('action');
+
+			$.ajax({
+					method: "POST",
+					url: "action.php",
+					data: {
+						productid: productid,
+						action: action
+					}
+				})
+				.done(function(msg) {
+					alert("Data Saved: " + msg);
+				});
+		});
+		$('.edit').on("click", function() {
+			
+
+			var productid = $(this).data('productid');
+			var action = $(this).data('action');
+
+			$.ajax({
+					method: "POST",
+					url: "action.php",
+					data: {
+						productid: productid,
+						action: action
+					}
+				})
+				.done(function(msg) {
+					$('.update').html(msg);
+				});
+
+		});
+	</script>
 	<?php include('footer.php'); ?>
