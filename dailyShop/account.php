@@ -31,6 +31,56 @@ if (isset($_POST['login'])) {
         $conn->close();
     }
 }
+//validation
+if (isset($_POST['register'])) {
+    $username=isset($_POST['username'])?$_POST['username']:'';
+    $password=isset($_POST['password'])?$_POST['password']:'';
+    $email=isset($_POST['email'])?$_POST['email']:'';
+    $role=isset($_POST['role'])?$_POST['role']:'';
+   
+    //validation for password
+    if ($password !=null|| $repassword!=null) {
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number    = preg_match('@[0-9]@', $password);
+        if (!$uppercase || !$lowercase || !$number || strlen($password) < 8) {
+            $errors[]=array('input'=>'password','msg'=>'password Must be a minimum of 8 characters
+            ,contain at least 1 number,one uppercase character,at least one lowercase character' );
+        }
+    }
+    //validation for  check all field are filled or not
+    if (isset($_POST['register'])) {
+        if (empty($_POST['username']) ||
+        empty($_POST['password']) ||
+        empty($_POST['email'])) {
+            $errors[]=array('input'=>'password','msg'=>'All Fields are required' );
+        } else {
+            //validation for name and email
+            $name = $_POST["username"];
+            if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+                $errors[] = array ('input'=>'form','msg'=>'Only letters and white space allowed');
+            }
+            $useremail = $_POST["email"];
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors[] = array ('input'=>'form','msg'=>'Invalid email format ');
+            }
+        }
+    }
+    
+    
+    if (sizeof($errors)==0) {
+        $sql = 'INSERT INTO users (`username`, `passwords`, `email`,`role`)
+		VALUES ("'.$username.'", "'.$password.'", "'.$email.'","'.$role.'" )';
+        if ($conn->query($sql) === true) {
+            //echo "New record created successfully";
+            header('Location: Login.php');
+        } else {
+             echo "Error: " . $sql . "<br>" . $conn->error;
+            $errors[] = array ('input'=>'form','msg'=>$conn->error);
+        }
+        $conn->close();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -393,14 +443,32 @@ if (isset($_POST['login'])) {
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="aa-myaccount-register">                 
+                <div class="aa-myaccount-register">  
+                <div id="message"><?php echo $message; ?></div>
+            <div id="errors">
+                <?php if (sizeof($errors)>0) : ?>
+                <ul>
+                    <?php foreach ($errors as $error) :?>
+                    <li><?php echo $error['msg']; ?></li>
+                    <?php endforeach;?>
+                </ul>
+                <?php endif;?></div>               
                  <h4>Register</h4>
                  <form action="" class="aa-login-form">
-                    <label for="">Username or Email address<span>*</span></label>
-                    <input type="text" placeholder="Username or email">
+                    <label for="" >Username or Email address<span>*</span></label>
+                    <input type="text"name="username" placeholder="Username or email">
+                    <label for="">Email<span>*</span></label>
+                    <input type="text" placeholder="Email" name="email">
                     <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
-                    <button type="submit" class="aa-browse-btn">Register</button>                    
+                    <input type="password" placeholder="Password" name="password">
+                    <p>
+							<label>Role</label>
+							<select name="role" class="small-input">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+							</select>
+						
+                    <button type="submit" name="register" class="aa-browse-btn">Register</button>                    
                   </form>
                 </div>
               </div>

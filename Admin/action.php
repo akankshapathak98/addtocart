@@ -66,9 +66,9 @@ if (!empty($_POST['action'])) {
                 $tempname = $_FILES["uploadfile"]["tmp_name"];
                 $folder = "resources/images/productimage/" . $filename;
                 $sql = "UPDATE products 
-    SET `product_name`='$_POST[product_name]' , `product_price`='$_POST[product_price]' , `product_image`='$filename',`color`='$_POST[color]',
-    `category_id`='$_POST[category_id]',`tag_id`='addslashes( $tag_id )',`long_desc`='$_POST[long_desc]'
-    WHERE `product_id`='" . $_POST["productid"] . "' ";
+                SET `product_name`='$_POST[product_name]' , `product_price`='$_POST[product_price]' , `product_image`='$filename',`color`='$_POST[color]',
+                `category_id`='$_POST[category_id]',`tag_id`='addslashes( $tag_id )',`long_desc`='$_POST[long_desc]'
+                WHERE `product_id`='" . $_POST["productid"] . "' ";
                 if ($conn->query($sql) === true) {
                     echo "Record updated successfully";
                     header("Location: dashboard.php");

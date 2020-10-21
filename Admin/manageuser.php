@@ -1,5 +1,24 @@
 <?php include('header.php');
 include('sidebar.php');
+include('config.php');
+$errors = array();
+$sql = "SELECT * FROM users";
+$result = mysqli_query($conn, $sql);
+if(isset($_POST['add']))
+{
+	$username = isset($_POST['username']) ? $_POST['username'] : '';
+	$email = isset($_POST['email']) ? $_POST['email'] : '';
+	$passwords = isset($_POST['passwords']) ? $_POST['passwords'] : '';
+	$sql="INSERT INTO users (`username`,`email`,`passwords`) VALUES ('".$username."','".$email."','".$passwords."')";
+	if (sizeof($errors) == 0) {
+	if ($conn->query($sql) === true) {
+		//echo "New record created successfully";
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+		$errors[] = array('input' => 'form', 'msg' => $conn->error);
+	}
+}
+}
 ?>
 <div id="main-content">
 	<!-- Main Content Section with everything -->
@@ -85,74 +104,58 @@ include('sidebar.php');
 					</tfoot>
 
 					<tbody>
+					<?php
+						
+						while ($row = mysqli_fetch_array($result)) {
+							
+						?>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td>1</td>
-							<td><a href="#" title="title">Smith</a></td>
-							<td>Smith@gmail.com</td>
+							<td><?php echo $row["user_id"]; ?></td>
+							<td><a href="#" title="title"><?php echo $row["username"]; ?></a></td>
+							<td><?php echo $row["email"]; ?></td>
 							<td>
 								<!-- Icons -->
-								<a href="#" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-								<a href="#" title="Delete"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
+								<a href="#" title="Edit" class="edit" data-action="userupdate" data-productid="<?php echo $row["user_id"]; ?>"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
+								<a href="#" title="Delete" class="delete" data-action="userdelete" data-productid="<?php echo $row["user_id"]; ?>"><img src="resources/images/icons/cross.png" alt="Delete" /></a>
 							</td>
 						</tr>
+						<?php
+						}
+						?>
 					</tbody>
 
 				</table>
 
 			</div> <!-- End #tab1 -->
 
-			<div class="tab-content" id="tab2">
+			<div class="tab-content update result" id="tab2">
+			
 
-				<form action="#" method="post">
+				<form method="post">
 
 					<fieldset>
 						<!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 
 						<p>
-							<label>Small form input</label>
-							<input class="text-input small-input" type="text" id="small-input" name="small-input" /> <span class="input-notification success png_bg">Successful message</span> <!-- Classes for input-notification: success, error, information, attention -->
-							<br /><small>A small description of the field</small>
+							<label>UserName</label>
+							<input class="text-input small-input" type="text" id="small-input" name="username" />
+							<!-- <span class="input-notification success png_bg">Successful message</span> -->
+							<!-- Classes for input-notification: success, error, information, attention -->
+							<br />
 						</p>
 
 						<p>
-							<label>Medium form input</label>
-							<input class="text-input medium-input datepicker" type="text" id="medium-input" name="medium-input" /> <span class="input-notification error png_bg">Error message</span>
+							<label>Email</label>
+							<input class="text-input small-input" type="text" id="large-input" name="email" />
 						</p>
-
+						
 						<p>
-							<label>Large form input</label>
-							<input class="text-input large-input" type="text" id="large-input" name="large-input" />
+							<label>Password</label>
+							<input class="text-input small-input" type="password" id="passwords" name="passwords" ><br><br>
 						</p>
-
 						<p>
-							<label>Checkboxes</label>
-							<input type="checkbox" name="checkbox1" /> This is a checkbox <input type="checkbox" name="checkbox2" /> And this is another checkbox
-						</p>
-
-						<p>
-							<label>Radio buttons</label>
-							<input type="radio" name="radio1" /> This is a radio button<br />
-							<input type="radio" name="radio2" /> This is another radio button
-						</p>
-
-						<p>
-							<label>This is a drop down list</label>
-							<select name="dropdown" class="small-input">
-								<option value="option1">Option 1</option>
-								<option value="option2">Option 2</option>
-								<option value="option3">Option 3</option>
-								<option value="option4">Option 4</option>
-							</select>
-						</p>
-
-						<p>
-							<label>Textarea with WYSIWYG</label>
-							<textarea class="text-input textarea wysiwyg" id="textarea" name="textfield" cols="79" rows="15"></textarea>
-						</p>
-
-						<p>
-							<input class="button" type="submit" value="Submit" />
+							<input class="button" type="submit" name="add" value="Submit" />
 						</p>
 
 					</fieldset>
@@ -162,11 +165,48 @@ include('sidebar.php');
 				</form>
 
 			</div> <!-- End #tab2 -->
-
-		</div> <!-- End .content-box-content -->
+				</div> <!-- End .content-box-content -->
 
 	</div> <!-- End .content-box -->
 
 
 	<div class="clear"></div>
+	<script>
+		$('.delete').on("click", function() {
+
+			var productid = $(this).data('productid');
+			var action = $(this).data('action');
+
+			$.ajax({
+					method: "POST",
+					url: "user_action.php",
+					data: {
+						productid: productid,
+						action: action
+					}
+				})
+				.done(function(msg) {
+					alert("Data Saved: " + msg);
+				});
+		});
+		$('.edit').on("click", function() {
+			
+
+			var productid = $(this).data('productid');
+			var action = $(this).data('action');
+
+			$.ajax({
+					method: "POST",
+					url: "user_action.php",
+					data: {
+						productid: productid,
+						action: action
+					}
+				})
+				.done(function(msg) {
+					$('.result').html(msg);
+				});
+
+		});
+	</script>
 	<?php include('footer.php'); ?>
