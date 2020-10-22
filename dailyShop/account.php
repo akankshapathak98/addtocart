@@ -5,8 +5,10 @@ require '../Admin/config.php';
 $errors = array();
 $message = '';
 if (isset($_POST['login'])) {
+
   $username = isset($_POST['username']) ? $_POST['username'] : '';
   $password = isset($_POST['password']) ? $_POST['password'] : '';
+
   if (
     empty($_POST['username']) ||
     empty($_POST['password'])
@@ -15,17 +17,16 @@ if (isset($_POST['login'])) {
   }
   if (sizeof($errors) == 0) {
     $sql = "SELECT * FROM users 
-		WHERE `username`='" . $username . "'AND `passwords`='" . $password . "'";
+    WHERE `username`='" . $username . "' AND `passwords`='" . $password . "'";
+    echo ($sql);
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
       // output data of each row
       while ($row = $result->fetch_assoc()) {
         $_SESSION['userdata'] = array('username' => $row['username'], 'user_id' => $row['user_id'], 'role' => $row['role']);
-        if ($_SESSION['userdata']['role'] == 'admin') {
-          header('Location: product.php');
-        } else {
-          header('Location: index.html');
-        }
+
+        echo ("<script>alert('$_SESSION[userdata] ');</script>");
+        header('Location: product.php');
       }
     } else {
       $errors[] = array('input' => 'form', 'msg' => 'Invalid Details');
@@ -441,10 +442,10 @@ if (isset($_POST['submit'])) {
                   <h4>Login</h4>
                   <form action="" method="post" class="aa-login-form">
                     <label for="">Username or Email address<span>*</span></label>
-                    <input type="text" placeholder="Username or email">
+                    <input type="text" name="username" placeholder="Username or email">
                     <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
-                    <button type="submit" class="aa-browse-btn">Login</button>
+                    <input type="password" name="password" placeholder="Password">
+                    <button type="submit" name="login" class="aa-browse-btn">Login</button>
                     <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
                     <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
                   </form>
