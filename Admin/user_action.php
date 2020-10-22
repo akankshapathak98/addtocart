@@ -2,9 +2,6 @@
 require 'config.php';
 if (!empty($_POST['action'])) {
     switch ($_POST['action']) {
-
-
-
         case "userdelete":
             echo ($_POST['productid']);
             $query = "SELECT * FROM users";
@@ -27,7 +24,7 @@ if (!empty($_POST['action'])) {
         case "userupdate":
             $errors = array();
             if (sizeof($errors) == 0) {
-                $sql = "SELECT * FROM users where user_id = '" . $_POST["productid"] . "' ";
+                $sql = "SELECT * FROM users where `user_id` = '" . $_POST["productid"] . "'";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     // output data of each row
@@ -42,10 +39,10 @@ if (!empty($_POST['action'])) {
                 }
             }
             if (isset($_POST['update'])) {
-
+                echo "<script>alert('hi')</script>";
                 $sql = "UPDATE users 
                 SET `username`='$_POST[username]' , `email`='$_POST[email]'
-                WHERE `user_id`='" . $_POST["productid"] . "' ";
+                WHERE `user_id`='". $_POST["productid"] ."'";
                 if ($conn->query($sql) === true) {
                     echo "Record updated successfully";
                     header("Location: manageuser.php");

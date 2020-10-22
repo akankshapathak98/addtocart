@@ -18,7 +18,7 @@ if (isset($_POST['add'])) {
 	$tag_id = isset($_POST['tags']) ? $_POST['tags'] : '';
 	$color = isset($_POST['color']) ? $_POST['color'] : '';
 
-	$tag_id = implode(",", $_POST['tags']);
+	$tag_id = json_encode($_POST['tags']);
 	if (sizeof($errors) == 0) {
 		$filename = $_FILES["uploadfile"]["name"];
 		$tempname = $_FILES["uploadfile"]["tmp_name"];

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'config.php';
-$message='';
+$message = '';
 $product_array = array();
 $querry = "SELECT * FROM tags ";
 $results = mysqli_query($conn, $querry);
@@ -51,8 +51,8 @@ if (!empty($_POST['action'])) {
                     while ($row = $result->fetch_assoc()) {
                         $userdata = array(
                             'product_id' => $row['product_id'],
-                            'product_name' => $row['product_name'], 'product_price' => $row['product_price'], 'product_image' => $row['product_image'],'color'=>$row['color'],
-                            'category_id'=>$row['category_id'],'tag_id'=>$row['tag_id'],'long_desc'=>$row['long_desc']
+                            'product_name' => $row['product_name'], 'product_price' => $row['product_price'], 'product_image' => $row['product_image'], 'color' => $row['color'],
+                            'category_id' => $row['category_id'], 'tag_id' => $row['tag_id'], 'long_desc' => $row['long_desc']
                         );
                     }
                 } else {
@@ -90,90 +90,87 @@ if (!empty($_POST['action'])) {
 
 ?>
 <div id="message"><?php echo $message; ?></div>
-				<div id="errors">
-					<?php if (sizeof($errors) > 0) : ?>
-						<ul>
-							<?php foreach ($errors as $error) : ?>
-								<li><?php echo $error['msg']; ?></li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
-				</div>
+<div id="errors">
+    <?php if (sizeof($errors) > 0) : ?>
+        <ul>
+            <?php foreach ($errors as $error) : ?>
+                <li><?php echo $error['msg']; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
 
-				<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
 
-					<fieldset>
-						<!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+    <fieldset>
+        <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 
-						<p>
-							<label>ProductName</label>
-                            <input class="text-input small-input" type="text" id="small-input" name="product_name"
-                            value="<?php echo $userdata['product_name']; ?>" />
-							<!-- <span class="input-notification success png_bg">Successful message</span> -->
-							<!-- Classes for input-notification: success, error, information, attention -->
-							<br />
-						</p>
+        <p>
+            <label>ProductName</label>
+            <input class="text-input small-input" type="text" id="small-input" name="product_name" value="<?php echo $userdata['product_name']; ?>" />
+            <!-- <span class="input-notification success png_bg">Successful message</span> -->
+            <!-- Classes for input-notification: success, error, information, attention -->
+            <br />
+        </p>
 
-						<!-- <p>
+        <!-- <p>
 									<label></label>
 									<input class="text-input medium-input datepicker" type="text" id="medium-input" name="medium-input" /> <span class="input-notification error png_bg">Error message</span>
 								</p> -->
 
-						<p>
-							<label>ProductPrice</label>
-                            <input class="text-input small-input" type="text" id="large-input" name="product_price" 
-                            value="<?php echo $userdata['product_price']; ?>"/>
-						</p>
-						<p>
-							<label for="image">ProductImage:</label>
-							<input class="text-input small-input" type="file" id="large-input" name="uploadfile" />
+        <p>
+            <label>ProductPrice</label>
+            <input class="text-input small-input" type="text" id="large-input" name="product_price" value="<?php echo $userdata['product_price']; ?>" />
+        </p>
+        <p>
+            <label for="image">ProductImage:</label>
+            <input class="text-input small-input" type="file" id="large-input" name="uploadfile" />
 
 
 
-						</p>
-						<p>
-							<label>Color</label>
-							<input type="color" id="color" name="color"  value="<?php echo $userdata['color']; ?>"><br><br>
-							</p>
-						<p>
-							<label>Category</label>
-							<select name="category_id" class="small-input">
-							<?php
-						
-						while ($row = mysqli_fetch_array($resultt)) {
-						
-						?>
-								<option value="<?php echo $row["category_id"]?>"><?php echo $row["cat_name"]?></option>
-								<?php
-							
-						}
-						?>
-							</select>
-						</p>
-						<p>
-							<label>Tags</label>
-							<?php
-						
-						while ($row = mysqli_fetch_array($results)) {
-							
-						?>
-								<input type="checkbox" name="tags[]"  value="<?php echo $row["tag_name"]?>"/> <?php echo $row["tag_name"]?>
-								<?php
-							
-						}
-						?>
-						</p>
-						<p>
-							<label>Description</label>
-                            <textarea class="text-input textarea wysiwyg" id="textarea" name="long_desc" cols="79" rows="15"
-                            value="<?php echo $userdata['long_desc']; ?>"></textarea>
-						</p>
-						<p>
-							<input class="button" type="submit" name="add" value="Update" />
-						</p>
+        </p>
+        <p>
+            <label>Color</label>
+            <input type="color" id="color" name="color" value="<?php echo $userdata['color']; ?>"><br><br>
+        </p>
+        <p>
+            <label>Category</label>
+            <select name="category_id" class="small-input">
+                <?php
 
-					</fieldset>
+                while ($row = mysqli_fetch_array($resultt)) {
 
-					<div class="clear"></div><!-- End .clear -->
+                ?>
+                    <option value="<?php echo $row["category_id"] ?>"><?php echo $row["cat_name"] ?></option>
+                <?php
 
-				</form>
+                }
+                ?>
+            </select>
+        </p>
+        <p>
+            <label>Tags</label>
+            <?php
+
+            while ($row = mysqli_fetch_array($results)) {
+
+            ?>
+                <input type="checkbox" name="tags[]" value="<?php echo $row["tag_name"] ?>" /> <?php echo $row["tag_name"] ?>
+            <?php
+
+            }
+            ?>
+        </p>
+        <p>
+            <label>Description</label>
+            <textarea class="text-input textarea wysiwyg" id="textarea" name="long_desc" cols="79" rows="15" value="<?php echo $userdata['long_desc']; ?>"></textarea>
+        </p>
+        <p>
+            <input class="button" type="submit" name="add" value="Update" />
+        </p>
+
+    </fieldset>
+
+    <div class="clear"></div><!-- End .clear -->
+
+</form>

@@ -94,6 +94,3 @@ if (isset($_POST['checkout'])) {
      $conn->close();
 
 }
-
-
-?>
