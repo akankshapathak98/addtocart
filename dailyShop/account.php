@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
 		VALUES ("' . $username . '", "' . $password . '", "' . $email . '","' . $role . '" )';
     if ($conn->query($sql) === true) {
       //echo "New record created successfully";
-      header('Location: Login.php');
+      header('Location: product.php');
     } else {
       echo "Error: " . $sql . "<br>" . $conn->error;
       $errors[] = array('input' => 'form', 'msg' => $conn->error);
@@ -193,7 +193,7 @@ if (isset($_POST['submit'])) {
               <!-- / header top left -->
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html">My Account</a></li>
+                  <li><a href="account.php">My Account</a></li>
                   <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
                   <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
@@ -439,7 +439,7 @@ if (isset($_POST['submit'])) {
               <div class="col-md-6">
                 <div class="aa-myaccount-login">
                   <h4>Login</h4>
-                  <form action="" class="aa-login-form">
+                  <form action="" method="post" class="aa-login-form">
                     <label for="">Username or Email address<span>*</span></label>
                     <input type="text" placeholder="Username or email">
                     <label for="">Password<span>*</span></label>
@@ -462,7 +462,7 @@ if (isset($_POST['submit'])) {
                       </ul>
                     <?php endif; ?></div>
                   <h4>Register</h4>
-                  <form action="" class="aa-login-form">
+                  <form action="account.php" method="POST" class="aa-login-form">
                     <label for="">Username or Email address<span>*</span></label>
                     <input type="text" name="username" placeholder="Username or email">
                     <label for="">Email<span>*</span></label>
