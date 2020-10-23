@@ -40,6 +40,7 @@ if (isset($_POST['action'])) {
 
       $sql = "SELECT * FROM products WHERE quantity='1'";
 
+
       if (isset($_POST['color'])) {
         $color = implode("|", $_POST['color']);
         $sql .= "AND color REGEXP '$color'";
@@ -47,6 +48,10 @@ if (isset($_POST['action'])) {
       if (isset($_POST['tags'])) {
         $tags = implode("|", $_POST['tags']);
         $sql .= "AND tag_id REGEXP '$tags'";
+      }
+      if (isset($_POST['minimum_price'], $_POST['maximum_price']) && !empty($_POST['minimum_price']) && !empty($_POST['maximum_price'])) {
+
+        $sql .= "And product_price BETWEEN '$_POST[minimum_price]' AND '$_POST[maximum_price]'";
       }
       echo ($sql);
       $result = mysqli_query($conn, $sql);
@@ -58,10 +63,10 @@ if (isset($_POST['action'])) {
         $product_array[] = $row;
         $count++;
       }
+      $output = '<ul class="aa-product-catg">';
       if ($result->num_rows > 0) {
         foreach ($product_array as $row) {
-          $output .= '<ul class="aa-product-catg">
-        <!-- start single product item -->
+          $output .= '
         <form>
         <li>
           <figure>
@@ -83,57 +88,9 @@ if (isset($_POST['action'])) {
           <!-- product badge -->
           <span class="aa-badge aa-sale" href="#">SALE!</span>
         </li>
-        </form>
-                                             
-      </ul>
-      <!-- quick view modal -->                  
-      <div class="modal fade" id="quick-view-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">                      
-            <div class="modal-body">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <div class="row">
-                <!-- Modal view slider -->
-                <div class="col-md-6 col-sm-6 col-xs-12">                              
-                  <div class="aa-product-view-slider">                                
-                    <div class="simpleLens-gallery-container" id="demo-1">
-                      <div class="simpleLens-container">
-                          <div class="simpleLens-big-image-container">
-                              <a class="simpleLens-lens-image" data-lens-image="img/view-slider/large/polo-shirt-1.png">
-                                  <img src="img/view-slider/medium/polo-shirt-1.png" class="simpleLens-big-image">
-                              </a>
-                          </div>
-                      </div>
-                      <div class="simpleLens-thumbnails-container">
-                          <a href="#" class="simpleLens-thumbnail-wrapper"
-                             data-lens-image="img/view-slider/large/polo-shirt-1.png"
-                             data-big-image="img/view-slider/medium/polo-shirt-1.png">
-                              <img src="img/view-slider/thumbnail/polo-shirt-1.png">
-                          </a>                                    
-                          <a href="#" class="simpleLens-thumbnail-wrapper"
-                             data-lens-image="img/view-slider/large/polo-shirt-3.png"
-                             data-big-image="img/view-slider/medium/polo-shirt-3.png">
-                              <img src="img/view-slider/thumbnail/polo-shirt-3.png">
-                          </a>
-
-                          <a href="#" class="simpleLens-thumbnail-wrapper"
-                             data-lens-image="img/view-slider/large/polo-shirt-4.png"
-                             data-big-image="img/view-slider/medium/polo-shirt-4.png">
-                              <img src="img/view-slider/thumbnail/polo-shirt-4.png">
-                          </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Modal view content -->
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <div class="aa-product-view-content model">
-                    
-            </div>                        
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div>';
+        </form>';
         }
+        $output = '</ul>';
       } else {
         $output = "<h3>No Product Found";
       }

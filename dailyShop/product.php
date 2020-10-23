@@ -506,9 +506,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <form action="">
                   <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
                   </div>
-                  <span id="skip-value-lower" class="example-val">10.00</span>
-                  <span id="skip-value-upper" class="example-val">1000.00</span>
-                  <button class="aa-filter-btn" type="submit">Filter</button>
+                  <span id="skip-value-lower" class="min">10.00</span>
+                  <span id="skip-value-upper" class="max">1000.00</span>
+                  <button class="aa-filter-btn product_check" data-action="tags" type="button">Filter</button>
                 </form>
               </div>
 
@@ -764,9 +764,9 @@ while ($row = mysqli_fetch_assoc($result)) {
       var categories = get_filter_text('categories');
       var tags = get_filter_text('tags');
       var color = get_filter_text('color');
-      var minimum_price = $('#skip-value-lower').val();
-      var maximum_price = $('#skip-value-upper').val();
-      console.log(tags);
+      var minimum_price = $('.min').val();
+      var maximum_price = $('.max').val();
+
       $.ajax({
         method: "POST",
         url: "filter.php",
