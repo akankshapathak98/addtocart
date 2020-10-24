@@ -394,13 +394,13 @@ while ($row = mysqli_fetch_assoc($result)) {
               </div>
             </div>
 
-            <div class="aa-product-catg-body" id="result">
-              <ul class="aa-product-catg">
+            <div class="aa-product-catg-body">
+              <ul class="aa-product-catg" id="result">
                 <!-- start single product item -->
                 <?php foreach ($product_array as $key => $value) { ?>
                   <form action="product.php?action=add&product_id=<?php echo $product_array[$key]["product_id"]; ?>">
                     <li>
-                      <figure id="result">
+                      <figure>
                         <a class="aa-product-img" href="#"><img src="../Admin/resources/images/productimage/<?php echo $product_array[$key]["product_image"]; ?>" alt="polo shirt img"></a>
                         <a class="aa-add-card-btn add" href="#" data-action="add" data-productid="<?php echo $product_array[$key]["product_id"]; ?>" name="add-to-cart"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                         <figcaption>
@@ -764,8 +764,9 @@ while ($row = mysqli_fetch_assoc($result)) {
       var categories = get_filter_text('categories');
       var tags = get_filter_text('tags');
       var color = get_filter_text('color');
-      var minimum_price = $('.min').val();
-      var maximum_price = $('.max').val();
+      var minimum_price = $('.min').text();
+      var maximum_price = $('.max').text();
+      console.log("valueis ", maximum_price);
 
       $.ajax({
         method: "POST",
